@@ -12,7 +12,7 @@ uint8_t UpdateTeclado(void);
 uint8_t KEYPAD_Scan(uint8_t*);
 
 
-int main(void)
+int teclado(void)
 {
 	//uint8_t matriz[16]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
 	uint8_t matriz[16]={'7','8','9','/','4','5','6','x','1','2','3','-','O','0','=','+'};

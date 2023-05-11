@@ -37,7 +37,6 @@
 *.hex
 
 # Debug files
-Debug/
 *.dSYM/
 *.su
 *.idb
@@ -52,5 +51,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-#Atmega versions
+#Added by Petrigh
 .vs/
+Debug/
+Project Backups/
+Proteus/*.workspace

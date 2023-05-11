@@ -1,5 +1,5 @@
-#ifndef _MAIN_H
-#define _MAIN_H
+#ifndef _TIMER_H
+#define _TIMER_H
 
 	// Archivo de cabecera del Microcontrolador
 	#include <avr/io.h>

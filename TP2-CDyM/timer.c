@@ -5,12 +5,11 @@
  * Author : J.Juarez
  */ 
 
-#include "timer.h"
 
 //CONFIGURACION DEL TIMER0
 //Activación de interrupción periódica y
 //Generación de señal periódica en terminal OC0A (PD6) 
-void Timer0Init(void){
+void Timer0Inita(void){
 	DDRD |= (1<<PORTD6); //waveform generator output
 	//configuración del TOPE del contador TCNT0 
 	OCR0A=39;			//39+1
@@ -23,7 +22,7 @@ void Timer0Init(void){
 //se activa periodicamente cuando TCNT0==OCR0A modo CTC
 //ejecuta una tarea dummy para test
 
-ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=40/2MHz=20us  o fisr=2MHz/40=500kHz
+ISRa(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=40/2MHz=20us  o fisr=2MHz/40=500kHz
 
 		PORTB ^=(1<<5); //toggle cada 100ms
 }
@@ -31,7 +30,7 @@ ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=40/2MHz=20us  o
 
 //MANEJADOR DE INTERRUPCIÓN INT0
 //ejecuta una tarea dummy para test
-ISR(INT0_vect){
+ISRa(INT0_vect){
 	//tarea dummy
 	PORTC ^=(1<<PORTC3);
 	//debouncing
@@ -41,7 +40,7 @@ ISR(INT0_vect){
 //INT0
 //Configuración y activación
 //de la interrupción externa INT0
-void Int0Init(){
+void Int0Inita(){
 	DDRD &=~(1<<PORTD2);
 	PORTD |=(1<<PORTD2); //Pullup PD2
 	EICRA |=(1<<ISC01); //INT0 x flanco de bajada
@@ -51,7 +50,7 @@ void Int0Init(){
 //PROGRAMA MAIN
 //Inicializaciones y activación de interrupciones
 //pone en ejecución una tarea dummy en el loop.
-int main(void)
+int maina(void)
 {
 	DDRC |=(1<<DDC3);
 	DDRD |=(1<<DDD1);
