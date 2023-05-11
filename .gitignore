@@ -37,7 +37,7 @@
 *.hex
 
 # Debug files
-Debug/**
+Debug/
 *.dSYM/
 *.su
 *.idb
@@ -53,4 +53,4 @@ Mkfile.old
 dkms.conf
 
 #Atmega versions
-.vs/**
+.vs/
