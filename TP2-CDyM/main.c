@@ -6,7 +6,6 @@
  */ 
 
 #include "timer.h"
-#define F_CPU 16000000UL
 
 uint8_t count_clock = 0;
 //CONFIGURACION DEL TIMER0
@@ -23,9 +22,9 @@ void Timer0Init(void){
 //MANEJADOR DE INTERRUPCION DEL COMPARADOR A DEL TIMER0
 //se activa periodicamente cuando TCNT0==OCR0A modo CTC
 //ejecuta una tarea dummy para test
-ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=500/250KHz=2ms  o fisr=15,625KHz/194=80Hz
-	if(++count_clock >4 ){
-		PORTB ^=(1<<5); //toggle cada 1seg
+ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=194/15,625KHz=12ms  o fisr=15,625KHz/194=80Hz
+	if(++count_clock >4 ){ //esto deberia entrar cada 60ms, pero lo hace cada 1 seg
+		PORTB ^=(1<<5);
 		count_clock = 0;
 	}
 }
