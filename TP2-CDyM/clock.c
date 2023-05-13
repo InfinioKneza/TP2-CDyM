@@ -5,12 +5,12 @@
  *  Author: Petrigh
  */ 
 
-
-#include "clock.h"
-
 static uint8_t seconds=0;
 static uint8_t minutes=0;
 static uint8_t hours=0;
+
+
+#include "clock.h"
 
 void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s){
 	CLOCK_ModHora(h);
@@ -19,7 +19,7 @@ void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s){
 }
 
 void CLOCK_Update(){
-	seconds++;
+	seconds++:
 	if (seconds==60)
 	{
 		seconds=0;
@@ -53,7 +53,6 @@ uint8_t* CLOCK_GetHora(uint8_t* hAct){
 void CLOCK_ModHora(uint8_t h){
 	if(h<24 && h>=0){
 		hours=h;
-	}
 }
 
 void CLOCK_ModMin(uint8_t h){
