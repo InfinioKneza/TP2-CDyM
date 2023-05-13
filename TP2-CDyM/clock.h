@@ -9,7 +9,11 @@
 #ifndef CLOCK_H_
 #define CLOCK_H_
 
+#define F_CPU 16000000UL
+#include <avr/io.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <stdint-gcc.h>
 
 void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s);
 void CLOCK_Update();
