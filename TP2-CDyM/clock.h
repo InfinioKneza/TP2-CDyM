@@ -2,12 +2,14 @@
  * clock.h
  *
  * Created: 12/05/2023 19:28:54
- *  Author: lylab
+ *  Author: Petrigh
  */ 
 
 
 #ifndef CLOCK_H_
 #define CLOCK_H_
+
+#include <stdlib.h>
 
 void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s);
 void CLOCK_Update();

@@ -108,6 +108,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="clock.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="clock.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="lcd.c">
       <SubType>compile</SubType>
     </Compile>
@@ -117,7 +123,10 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MEF.c">
+    <Compile Include="mef.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mef.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="teclado.c">

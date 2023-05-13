@@ -10,7 +10,6 @@ static uint8_t minutes=0;
 static uint8_t hours=0;
 
 #include "clock.h"
-#include <stdlib.h>
 
 void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s){
 	CLOCK_ModHora(h);
@@ -36,7 +35,7 @@ void CLOCK_Update(){
 	}
 }
 
-uint8_t CLOCK_GetHora(uint8_t* hAct){
+uint8_t* CLOCK_GetHora(uint8_t* hAct){
 	free(hAct);
 	uint8_t* hora = malloc(sizeof(uint8_t)*8);
 	hora[0] = hours/10;
