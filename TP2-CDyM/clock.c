@@ -4,13 +4,12 @@
  * Created: 12/05/2023 18:44:13
  *  Author: Petrigh
  */ 
+#include "clock.h"
 
 static uint8_t seconds=0;
 static uint8_t minutes=0;
 static uint8_t hours=0;
 
-
-#include "clock.h"
 
 void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s){
 	CLOCK_ModHora(h);
@@ -19,7 +18,7 @@ void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s){
 }
 
 void CLOCK_Update(){
-	seconds++:
+	seconds++;
 	if (seconds==60)
 	{
 		seconds=0;
