@@ -29,7 +29,7 @@ static uint8_t UpdateTeclado(void){
 		TECLADO_PORTB &= fils[r];
 		for(c=0; c<4; c++){			
 			if(!(TECLADO_PIND & cols[c])){
-				return (r*4+c);
+				return matriz[r*4+c];
 			}
 		}
 		TECLADO_PORTB |= ~(fils[r]);
@@ -39,7 +39,7 @@ static uint8_t UpdateTeclado(void){
 	TECLADO_PORTD &= fils[3];
 	for(c=0; c<4; c++){
 		if(!(TECLADO_PIND & cols[c])){
-			return (12+c);
+			return matriz[12+c];
 		}
 	}
 	TECLADO_PORTD |= ~(fils[4]);
