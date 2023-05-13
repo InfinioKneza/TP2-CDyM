@@ -19,7 +19,8 @@ uint8_t abierto[7] = {'A', 'B', 'I', 'E', 'R', 'T', 'O'};
 uint8_t denegado[8] = {'D', 'E', 'N', 'E', 'G', 'A', 'D', 'O'};		
 uint8_t MEF_flag;
 uint8_t cont_MEF;
-uint8_t *key;
+uint8_t* key;
+uint8_t* hora;
 
 
 #endif /* MEF_H_ */

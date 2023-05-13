@@ -1,6 +1,8 @@
+#include "mef.h"
 int State_call_count;
 MEF_STATE System_state;
-uint8_t* hora;
+static uint8_t cantDigitos;
+static uint8_t horaIngresada;
 
 
 void CERRADURA_Init(){
@@ -30,12 +32,15 @@ void CERRADURA_Update(void)
 			}
 			//Se fija si se ingresa algun cambio de horario
 			if (KEYPAD_Scan(&key) == 'A'){
-				System_state = HORA;
-				State_call_count = 0;
+				//Mensaje que define el estado
+				LCDstring("Ingrese hora:",13);
+				//Cursor parpadeante
+				LCDcursorOnBlink();
 				break;
 			}
 			if (KEYPAD_Scan(&key) == 'B'){
 				System_state = MINUTO;
+				cambiar_Hora();
 				State_call_count = 0;
 				break;
 			}
@@ -84,16 +89,31 @@ void CERRADURA_Update(void)
 			}
 		break;
 		
-		 
-		
 		case HORA:
-			//Mensaje que define el estado
-			LCDstring("Ingrese hora:",13);
-			//Cursor parpadeante
-			LCDcursorOnBlink();
-			CLOCK_ModHora(CambiarHorario(hora));
-			System_state(CERRADO);
-			State_call_count = 0;
+			if(KEYPAD_Scan(key)){
+				if (&key != 'A' && &key != 'B' && &key != 'C' && &key != 'D' && &key != '*' && &key != '#')
+				{
+					if (!cantDigitos)
+					{
+						cantDigitos++;
+						hora[0]=key;
+						horaIngresada= (&key - '0') *10;
+					}else if(cantDigitos==1)
+					{
+						cantDigitos++;
+						hora[1]=&key;
+						horaIngresada+= (key-'0');
+					}
+					LCDHora();
+				}else if(&key == 'A')
+				{
+					CLOCK_ModHora(horaIngresada);
+					cerrar();
+				}else if(&key == '#')
+				{
+					cerrar();
+				}
+			}
 		break;
 			
 		case MINUTO:
@@ -172,3 +192,30 @@ void main(void)
 	}
 }
 
+static void cambiar_Hora(void){
+	System_state = HORA;
+	State_call_count = 0;
+	cantDigitos = 0;
+	horaIngresada= 0;	
+}
+
+static void LCDHora(void){
+		if (State_call_count== 1)
+		{
+			LCDclr();
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(4,0);
+		}
+		else{
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(4+cantDigitos,0);
+	}
+	LCDcursorOnBlink();
+}
+
+static void cerrar(void){
+	System_state = CERRADO;
+	State_call_count = 0;
+}
