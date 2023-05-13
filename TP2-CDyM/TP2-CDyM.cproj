@@ -117,6 +117,9 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MEF.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="teclado.c">
       <SubType>compile</SubType>
     </Compile>
