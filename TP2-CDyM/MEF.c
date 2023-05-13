@@ -1,9 +1,9 @@
-
-
+MEF_STATE System_state;
+uint8_t* hora;
 void CERRADURA_Init(){
 	System_state = CERRADO;
-	LCD_Write_String(MostarHora());
-	LCD_Write_String("\nCERRADO");
+	LCDstring(CLOCK_GetHora(hora), 8);
+	LCDstring(cerrado,7);
 	State_call_count = 0;
 }
 
