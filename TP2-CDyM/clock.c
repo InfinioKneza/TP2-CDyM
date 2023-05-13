@@ -19,7 +19,7 @@ void CLOCK_Init(uint8_t h, uint8_t m, uint8_t s){
 }
 
 void CLOCK_Update(){
-	seconds++:
+	seconds++;
 	if (seconds==60)
 	{
 		seconds=0;
