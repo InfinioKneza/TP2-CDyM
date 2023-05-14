@@ -134,25 +134,25 @@ void CERRADURA_Update(void)
 		
 		case HORA:
 			if(KEYPAD_Scan(key)){
-				if (&key != 'A' && &key != 'B' && &key != 'C' && &key != 'D' && &key != '*' && &key != '#')
+				if (*key != 'A' && *key != 'B' && *key != 'C' && *key != 'D' && *key != '*' && *key != '#')
 				{
 					if (!cantDigitos)
 					{
 						cantDigitos++;
 						hora[0]=key;
-						horaIngresada= (&key - '0') *10;
+						horaIngresada= (*key - '0') *10;
 					}else if(cantDigitos==1)
 					{
 						cantDigitos++;
-						hora[1]=&key;
+						hora[1]=*key;
 						horaIngresada+= (key-'0');
 					}
 					LCDHora();
-				}else if(&key == 'A')
+				}else if(*key == 'A')
 				{
 					CLOCK_ModHora(horaIngresada);
 					cerrar();
-				}else if(&key == '#')
+				}else if(*key == '#')
 				{
 					cerrar();
 				}
@@ -161,25 +161,25 @@ void CERRADURA_Update(void)
 			
 		case MINUTO:
 			if(KEYPAD_Scan(key)){
-				if (&key != 'A' && &key != 'B' && &key != 'C' && &key != 'D' && &key != '*' && &key != '#')
+				if (*key != 'A' && *key != 'B' && *key != 'C' && *key != 'D' && *key != '*' && *key != '#')
 				{
 					if (!cantDigitos)
 					{
 						cantDigitos++;
 						hora[3]=key;
-						horaIngresada= (&key - '0') *10;
+						horaIngresada= (*key - '0') *10;
 					}else if(cantDigitos==1)
 					{
 						cantDigitos++;
-						hora[4]=&key;
+						hora[4]=*key;
 						horaIngresada+= (key-'0');
 					}
 					LCDMinutos();
-				}else if(&key == 'B')
+				}else if(*key == 'B')
 				{
 					CLOCK_ModMin(horaIngresada);
 					cerrar();
-				}else if(&key == '#')
+				}else if(*key == '#')
 				{
 					cerrar();
 				}
@@ -188,25 +188,25 @@ void CERRADURA_Update(void)
 		
 		case SEGUNDOS:
 		if(KEYPAD_Scan(key)){
-			if (&key != 'A' && &key != 'B' && &key != 'C' && &key != 'D' && &key != '*' && &key != '#')
+			if (*key != 'A' && *key != 'B' && *key != 'C' && *key != 'D' && *key != '*' && *key != '#')
 			{
 				if (!cantDigitos)
 				{
 					cantDigitos++;
 					hora[6]=key;
-					horaIngresada= (&key - '0') *10;
+					horaIngresada= (*key - '0') *10;
 				}else if(cantDigitos==1)
 				{
 					cantDigitos++;
-					hora[7]=&key;
+					hora[7]=*key;
 					horaIngresada+= (key-'0');
 				}
 				LCDSegundos();
-			}else if(&key == 'C')
+			}else if(*key == 'C')
 			{
 				CLOCK_ModSeg(horaIngresada);
 				cerrar();
-			}else if(&key == '#')
+			}else if(*key == '#')
 			{
 				cerrar();
 			}
