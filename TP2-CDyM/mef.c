@@ -3,50 +3,6 @@ static uint8_t cantDigitos;
 static uint8_t horaIngresada;
 
 
-void CERRADURA_Init(){
-	System_state = CERRADO;
-	LCDstring(CLOCK_GetHora(hora), 8);
-	LCDstring(cerrado,7);
-	State_call_count = 0;
-}
-
-char validacion_final(){
-	if (password[0] == '5' && password[1] == '9' && password[2] == '1' && password[3] == '3'){
-		free(password);
-		uint8_t* password = malloc(sizeof(uint8_t)*8);	
-		return 1;
-	} else {
-		free(password);
-		uint8_t* password = malloc(sizeof(uint8_t)*8);
-		return 0;
-	}
-}
-
-char Verificar_Password(void){
-	//Sumo una tecla ya presionada para corroborar luego
-	cantTecla++;
-	//Se envia el primer caracter al LCD
-	LCDsendChar('*');
-	//Al apretarse una tecla, se dispone de 30 segundos para escribir toda la clave completa
-	if (State_call_count > 300){
-		State_call_count = 0;
-		cantTecla = 0;
-		return 0;
-	}
-	//Verifico que tengo ingresado la contraseña completa
-	if (cantTecla == 4){
-		cantTecla = 0;
-		return validacion_final(); //Retorna 1 si la contraseña es correcta, o 0 si es incorrecta
-	}else{
-		return 0; //No tengo las cuatro claves aun
-	}
-	
-	
-	
-}
-
-
-
 
 void CERRADURA_Update(void)
 //llamada cada 100 ms
@@ -71,19 +27,16 @@ void CERRADURA_Update(void)
 				}
 				//Se fija si se ingresa algun cambio de horario
 				if (*key == 'A'){
-					System_state = HORA;
-					State_call_count = 0;
+					cambiar_Hora(HORA);
 					break;
 				}
 				if (*key == 'B'){
-					System_state = MINUTO;
-					State_call_count = 0;
+					cambiar_Hora(MINUTO);
 					break;
 				}
 			
 				if (*key == 'C'){
-					System_state = SEGUNDOS;
-					State_call_count = 0;
+					cambiar_Hora(SEGUNDOS);
 					break;
 				}
 			}
@@ -137,13 +90,13 @@ void CERRADURA_Update(void)
 					if (!cantDigitos)
 					{
 						cantDigitos++;
-						hora[0]=key;
+						hora[0]=*key;
 						horaIngresada= (*key - '0') *10;
 					}else if(cantDigitos==1)
 					{
 						cantDigitos++;
 						hora[1]=*key;
-						horaIngresada+= (key-'0');
+						horaIngresada+= (*key-'0');
 					}
 					LCDHora();
 				}else if(*key == 'A')
@@ -164,13 +117,13 @@ void CERRADURA_Update(void)
 					if (!cantDigitos)
 					{
 						cantDigitos++;
-						hora[3]=key;
+						hora[3]=*key;
 						horaIngresada= (*key - '0') *10;
 					}else if(cantDigitos==1)
 					{
 						cantDigitos++;
 						hora[4]=*key;
-						horaIngresada+= (key-'0');
+						horaIngresada+= (*key-'0');
 					}
 					LCDMinutos();
 				}else if(*key == 'B')
@@ -191,13 +144,13 @@ void CERRADURA_Update(void)
 				if (!cantDigitos)
 				{
 					cantDigitos++;
-					hora[6]=key;
+					hora[6]=*key;
 					horaIngresada= (*key - '0') *10;
 				}else if(cantDigitos==1)
 				{
 					cantDigitos++;
 					hora[7]=*key;
-					horaIngresada+= (key-'0');
+					horaIngresada+= (*key-'0');
 				}
 				LCDSegundos();
 			}else if(*key == 'C')
@@ -215,17 +168,6 @@ void CERRADURA_Update(void)
 			
 	}
 	
-}
-
-
-//Esto luego se cambia
-ISR (Timer0_CompA_vect) // cada 10 ms
-{
-	// actualizar MEF cada 100 ms
-	if (++cont_MEF==10) {
-		MEF_flag=1;
-		cont_MEF=0;
-	}
 }
 
 
@@ -258,14 +200,14 @@ int main(void)
 	}
 }
 
-static void cambiar_Hora(void){
-	System_state = HORA;
+void cambiar_Hora(MEF_STATE state){
+	System_state = state;
 	State_call_count = 0;
 	cantDigitos = 0;
 	horaIngresada= 0;	
 }
 
-static void LCDHora(void){
+void LCDHora(void){
 		if (State_call_count== 1)
 		{
 			LCDclr();
@@ -280,7 +222,8 @@ static void LCDHora(void){
 	}
 	LCDcursorOnBlink();
 }
-static void LCDMinutos(void){
+
+void LCDMinutos(void){
 	if (State_call_count== 1)
 	{
 		LCDclr();
@@ -295,7 +238,8 @@ static void LCDMinutos(void){
 	}
 	LCDcursorOnBlink();
 }
-static void LCDSegundos(void){
+
+void LCDSegundos(void){
 	if (State_call_count== 1)
 	{
 		LCDclr();
@@ -310,7 +254,49 @@ static void LCDSegundos(void){
 	}
 	LCDcursorOnBlink();
 }
-static void cerrar(void){
+
+void cerrar(void){
 	System_state = CERRADO;
 	State_call_count = 0;
+}
+
+
+void CERRADURA_Init(){
+	System_state = CERRADO;
+	LCDstring(CLOCK_GetHora(hora), 8);
+	LCDstring(cerrado,7);
+	State_call_count = 0;
+}
+
+
+char validacion_final(){
+	if (password[0] == '5' && password[1] == '9' && password[2] == '1' && password[3] == '3'){
+		free(password);
+		uint8_t* password = malloc(sizeof(uint8_t)*8);
+		return 1;
+		} else {
+		free(password);
+		uint8_t* password = malloc(sizeof(uint8_t)*8);
+		return 0;
+	}
+}
+
+char Verificar_Password(void){
+	//Sumo una tecla ya presionada para corroborar luego
+	cantTecla++;
+	//Se envia el primer caracter al LCD
+	LCDsendChar('*');
+	//Al apretarse una tecla, se dispone de 30 segundos para escribir toda la clave completa
+	if (State_call_count > 300){
+		State_call_count = 0;
+		cantTecla = 0;
+		return 0;
+	}
+	//Verifico que tengo ingresado la contraseña completa
+	if (cantTecla == 4){
+		cantTecla = 0;
+		return validacion_final(); //Retorna 1 si la contraseña es correcta, o 0 si es incorrecta
+		}else{
+		return 0; //No tengo las cuatro claves aun
+	}
 }

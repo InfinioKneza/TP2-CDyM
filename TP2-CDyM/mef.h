@@ -27,5 +27,14 @@ MEF_STATE System_state;
 uint8_t* hora;
 uint8_t* password;
 
+void CERRADURA_Init(void);
+void CERRADURA_Update(void);
+void cambiar_Hora(MEF_STATE);
+void LCDHora(void);
+void LCDMinutos(void);
+void LCDSegundos(void);
+void cerrar(void);
+void sEOS_Dispatch_Tasks(void);
+char Verificar_Password(void);
 
 #endif /* MEF_H_ */
