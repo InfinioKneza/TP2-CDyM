@@ -20,9 +20,11 @@ int main(void)
 	// inicializar teclado
 	TECLADO_Init();
 	// inicializar maq de estados y buffers
-	CERRADURA_Init();
+	CERRADURA_Init(10);
 	// configurar timer
 	Timer0Init();
+	// activavr interrupciones
+	sei();
 	while(1)
 	{
 		sEOS_Dispatch_Tasks(); // ejecutar tareas

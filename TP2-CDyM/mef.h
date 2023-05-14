@@ -20,7 +20,7 @@ uint8_t State_call_count;
 MEF_STATE System_state;
 uint8_t* password;
 
-void CERRADURA_Init(void);
+void CERRADURA_Init(uint8_t);
 void CERRADURA_Update(void);
 void cambiar_Hora(MEF_STATE);
 void LCDHora(void);

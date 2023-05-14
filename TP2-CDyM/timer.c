@@ -16,9 +16,9 @@ uint8_t clock_MEF = 0;
 //Generación de señal periódica en terminal OC0A (PD6) 
 void Timer0Init(void){
 	//configuración del TOPE del contador TCNT0 
-	OCR0A=194;			//194+1
+	OCR0A=124;			//194+1
 	TCCR0A =(1<<COM0A0) | (1<<WGM01); //modo CTC, Toggle on compare match
-	TCCR0B =(1<<CS02) | (1<<CS00);	//CTC CLK/1024 =16MHz/1024 =15,625KHz
+	TCCR0B =(1<<CS01);	//CTC CLK/1024 =16MHz/1024 =15,625KHz
 	TIMSK0 =(1<<OCIE0A); // habilitamos interrpución COMPA
 }
 
@@ -26,8 +26,8 @@ void Timer0Init(void){
 //se activa periodicamente cuando TCNT0==OCR0A modo CTC
 //ejecuta una tarea dummy para test
 ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=194/15,625KHz=12ms  o fisr=15,625KHz/194=80Hz
-	if(++count_clock >4 ){ //esto deberia entrar cada 60ms, pero lo hace cada 1 seg
-		MEF_flag= 0;
+	if(++cont_MEF == 25 ){ //esto deberia entrar cada 60ms, pero lo hace cada 1 seg
+		MEF_flag= 1;
 		cont_MEF = 0;
 	}
 }

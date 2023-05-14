@@ -6,24 +6,26 @@ static uint8_t abierto[] = "ABIERTO";
 static uint8_t denegado[] = "DENEGADO";
 static uint8_t cantTecla = 0;
 static uint8_t hora[8];
+static uint8_t tps;
+static uint8_t horaActual= 0;
 
-
+static void BreakCerrado(void);
 
 void CERRADURA_Update(void)
 //llamada cada 100 ms
 {	
 	//Contar numero de interrupciones
 	State_call_count++;
+	horaActual++;
 	
 	switch(System_state)
 	{
 		case CERRADO:
 			LCDCerrado();
 			//Se fija si se apreta por teclado
-			if (KEYPAD_Scan(key) == 1){
+			if (KEYPAD_Scan(key)){
 				//Se fija si ingresa contaseña
-				if( *key == '0' ||	*key == '1' || *key == '2' || *key == '3' || *key == '4' || *key == '5' || *key == '6' || 
-					*key == '7' || *key == '8' || *key == '9'){
+				if( (*key == '0') || (*key == '1') || (*key == '2') || (*key == '3') || (*key == '4') || (*key == '5') || (*key == '6') || (*key == '7') || (*key == '8') || (*key == '9')){
 					password[cantTecla] = *key;
 					System_state = PASSWORD;
 					State_call_count = 0;
@@ -43,6 +45,8 @@ void CERRADURA_Update(void)
 					cambiar_Hora(SEGUNDOS);
 					break;
 				}
+			}else{
+				BreakCerrado();
 			}
 		break;
 			
@@ -235,15 +239,10 @@ void cerrar(void){
 }
 
 
-void CERRADURA_Init(){
+void CERRADURA_Init(uint8_t ticks){
 	System_state = CERRADO;
-	LCDclr();
-	LCDGotoXY(4,0);
-	CLOCK_GetHora(hora);
-	LCDstring(hora, 8);
-	LCDGotoXY(4,1);
-	LCDstring(cerrado, 7);
 	State_call_count = 0;
+	tps = ticks;
 }
 
 
@@ -281,10 +280,26 @@ char Verificar_Password(void){
 
 
 void LCDCerrado(void){
+		LCDGotoXY(4,0);
+		CLOCK_GetHora(hora);
+		LCDstring(hora, 8);
+		LCDGotoXY(4,1);
+		LCDstring(cerrado, 7);
+}
+
+static void BreakCerrado(void){
+	if(State_call_count==1){
 		LCDclr();
 		LCDGotoXY(4,0);
 		CLOCK_GetHora(hora);
 		LCDstring(hora, 8);
 		LCDGotoXY(4,1);
 		LCDstring(cerrado, 7);
+	}
+	if(horaActual == tps){		
+		CLOCK_GetHora(hora);
+		LCDGotoXY(4,0);
+		LCDstring(hora, 8);
+		horaActual = 0;
+	}
 }
