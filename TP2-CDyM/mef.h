@@ -20,14 +20,13 @@ uint8_t State_call_count;
 MEF_STATE System_state;
 uint8_t* password;
 
-void CERRADURA_Init(uint8_t);
+void CERRADURA_Init();
 void CERRADURA_Update(void);
 void cambiar_Hora(MEF_STATE);
 void LCDHora(void);
 void LCDMinutos(void);
 void LCDSegundos(void);
 void LCDCerrado(void);
-void cerrar(void);
-char Verificar_Password(void);
+uint8_t Verificar_Password(void);
 
 #endif /* MEF_H_ */

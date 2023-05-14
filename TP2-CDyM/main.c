@@ -15,15 +15,15 @@ int main(void)
 {
 	// Inicializar LCD
 	LCD_Init();
-	// inicializar clock
-	CLOCK_Init(6,58,30);
 	// inicializar teclado
 	TECLADO_Init();
 	// inicializar maq de estados y buffers
-	CERRADURA_Init(10);
+	CERRADURA_Init();
+	// inicializar clock
+	CLOCK_Init(6,58,30);
 	// configurar timer
 	Timer0Init();
-	// activavr interrupciones
+	// activar interrupciones
 	sei();
 	while(1)
 	{

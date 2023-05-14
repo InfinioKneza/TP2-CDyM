@@ -6,10 +6,14 @@ static uint8_t abierto[] = "ABIERTO";
 static uint8_t denegado[] = "DENEGADO";
 static uint8_t cantTecla = 0;
 static uint8_t hora[8];
-static uint8_t tps;
 static uint8_t horaActual= 0;
 
 static void BreakCerrado(void);
+static void ingPass(void);
+static void ingPassContinue(void);
+static void stateCerrado(void);
+static void stateAbierto(void);
+static void stateDenegado(void);
 
 void CERRADURA_Update(void)
 //llamada cada 100 ms
@@ -21,14 +25,11 @@ void CERRADURA_Update(void)
 	switch(System_state)
 	{
 		case CERRADO:
-			LCDCerrado();
 			//Se fija si se apreta por teclado
 			if (KEYPAD_Scan(key)){
 				//Se fija si ingresa contaseña
 				if( (*key == '0') || (*key == '1') || (*key == '2') || (*key == '3') || (*key == '4') || (*key == '5') || (*key == '6') || (*key == '7') || (*key == '8') || (*key == '9')){
-					password[cantTecla] = *key;
-					System_state = PASSWORD;
-					State_call_count = 0;
+					ingPass();
 					break;
 				}
 				//Se fija si se ingresa algun cambio de horario
@@ -51,43 +52,48 @@ void CERRADURA_Update(void)
 		break;
 			
 		case PASSWORD:
-			//Mensaje de ingreso al estado
-			LCDstring("Ingrese contraseña:",19);
+			if(KEYPAD_Scan(key) && cantTecla<4){				
+				if (*key != 'A' && *key != 'B' && *key != 'C' && *key != 'D' && *key != '*' && *key != '#'){
+					ingPassContinue();
+				}
+			}
+			if(cantTecla == 4){
+				//Verifico que ingreso bien la contraseña
+				if (Verificar_Password()){
+					System_state = ABIERTO;
+					State_call_count = 0;
+					break;
+				} else {
+					System_state = DENEGADO;
+					State_call_count = 0;
+					break;
+				}			
+			}
 			//Esperar 30 segundos para que ingrese la clave, sino denegado
 			if(++State_call_count > 300){
 				System_state = DENEGADO;
 				State_call_count = 0;
 				break;
 			}	
-			//Verifico que ingreso bien la contraseña
-			if (Verificar_Password() == 1){
-				System_state = ABIERTO;
-				State_call_count = 0;
-				break;
-			} else {
-				System_state = DENEGADO;
-				State_call_count = 0;
-				break;
-			}
 		break;
 		
 		case ABIERTO:
-			//Mensaje de "ABIERTO" por 3 segundos
-			LCDstring(abierto,7);
+			if(State_call_count==1){
+				stateAbierto();
+			}
 			if (++State_call_count > 30)
 			{
-				System_state = CERRADO;
-				State_call_count = 0;
+				stateCerrado();
 			}
 		break;	
 			
 		case DENEGADO:
-			//Mensaje de "DENEGADO" por 2 segundos
-			LCDstring(denegado, 8);
+			if(State_call_count==1){
+				stateDenegado();
+			}
 			if (++State_call_count > 20)
 			{
-				System_state = CERRADO;
-				State_call_count = 0;
+				stateCerrado();
 			}
 		break;
 		
@@ -110,10 +116,10 @@ void CERRADURA_Update(void)
 				}else if(*key == 'A')
 				{
 					CLOCK_ModHora(horaIngresada);
-					cerrar();
+					stateCerrado();
 				}else if(*key == '#')
 				{
-					cerrar();
+					stateCerrado();
 				}
 			}
 		break;
@@ -137,10 +143,10 @@ void CERRADURA_Update(void)
 				}else if(*key == 'B')
 				{
 					CLOCK_ModMin(horaIngresada);
-					cerrar();
+					stateCerrado();
 				}else if(*key == '#')
 				{
-					cerrar();
+					stateCerrado();
 				}
 			}
 		break;
@@ -164,15 +170,13 @@ void CERRADURA_Update(void)
 			}else if(*key == 'C')
 			{
 				CLOCK_ModSeg(horaIngresada);
-				cerrar();
+				stateCerrado();
 			}else if(*key == '#')
 			{
-				cerrar();
+				stateCerrado();
 			}
 		}
 		break;
-		
-		
 			
 	}
 	
@@ -233,20 +237,12 @@ void LCDSegundos(void){
 	LCDcursorOnBlink();
 }
 
-void cerrar(void){
+void CERRADURA_Init(){
 	System_state = CERRADO;
 	State_call_count = 0;
 }
 
-
-void CERRADURA_Init(uint8_t ticks){
-	System_state = CERRADO;
-	State_call_count = 0;
-	tps = ticks;
-}
-
-
-char validacion_final(){
+uint8_t Verificar_Password(void){
 	if (password[0] == '5' && password[1] == '9' && password[2] == '1' && password[3] == '3'){
 		free(password);
 		uint8_t* password = malloc(sizeof(uint8_t)*8);
@@ -258,36 +254,8 @@ char validacion_final(){
 	}
 }
 
-char Verificar_Password(void){
-	//Sumo una tecla ya presionada para corroborar luego
-	cantTecla++;
-	//Se envia el primer caracter al LCD
-	LCDsendChar('*');
-	//Al apretarse una tecla, se dispone de 30 segundos para escribir toda la clave completa
-	if (State_call_count > 300){
-		State_call_count = 0;
-		cantTecla = 0;
-		return 0;
-	}
-	//Verifico que tengo ingresado la contraseña completa
-	if (cantTecla == 4){
-		cantTecla = 0;
-		return validacion_final(); //Retorna 1 si la contraseña es correcta, o 0 si es incorrecta
-		}else{
-		return 0; //No tengo las cuatro claves aun
-	}
-}
-
-
-void LCDCerrado(void){
-		LCDGotoXY(4,0);
-		CLOCK_GetHora(hora);
-		LCDstring(hora, 8);
-		LCDGotoXY(4,1);
-		LCDstring(cerrado, 7);
-}
-
-static void BreakCerrado(void){
+static void BreakCerrado(void)
+{
 	if(State_call_count==1){
 		LCDclr();
 		LCDGotoXY(4,0);
@@ -296,10 +264,46 @@ static void BreakCerrado(void){
 		LCDGotoXY(4,1);
 		LCDstring(cerrado, 7);
 	}
-	if(horaActual == tps){		
+	if(horaActual >= 10){		
 		CLOCK_GetHora(hora);
 		LCDGotoXY(4,0);
 		LCDstring(hora, 8);
 		horaActual = 0;
 	}
+}
+
+static void ingPass(void){
+	State_call_count=0;
+	System_state = PASSWORD;
+	password[cantTecla] = *key;
+	cantTecla++;
+	LCDclr();
+	LCDGotoXY(6,1);
+	LCDsendChar('*');
+}
+
+static void ingPassContinue(void){
+	password[cantTecla] = *key;
+	cantTecla++;
+	LCDsendChar('*');
+}
+
+static void stateCerrado(void){
+	State_call_count=0;
+	cantTecla=0;
+	horaActual=0;
+	System_state=CERRADO;
+	LCDcursorOFF();
+}
+
+static void stateAbierto(void){
+	LCDclr();
+	LCDGotoXY(4,1);
+	LCDstring(abierto,7);
+}
+
+static void stateDenegado(void){
+	LCDclr();
+	LCDGotoXY(4,1);
+	LCDstring(denegado,7);
 }

@@ -7,10 +7,9 @@
 
 #include "timer.h"
 
-uint8_t count_clock = 0;
-uint8_t MEF_flag = 0;
-uint8_t cont_MEF = 0;
-uint8_t clock_MEF = 0;
+static uint8_t MEF_flag = 0;
+static uint8_t cont_MEF = 0;
+static uint8_t clock_MEF = 0;
 //CONFIGURACION DEL TIMER0
 //Activación de interrupción periódica y
 //Generación de señal periódica en terminal OC0A (PD6) 
@@ -22,15 +21,6 @@ void Timer0Init(void){
 	TIMSK0 =(1<<OCIE0A); // habilitamos interrpución COMPA
 }
 
-//MANEJADOR DE INTERRUPCION DEL COMPARADOR A DEL TIMER0
-//se activa periodicamente cuando TCNT0==OCR0A modo CTC
-//ejecuta una tarea dummy para test
-ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=194/15,625KHz=12ms  o fisr=15,625KHz/194=80Hz
-	if(++cont_MEF == 25 ){ //esto deberia entrar cada 60ms, pero lo hace cada 1 seg
-		MEF_flag= 1;
-		cont_MEF = 0;
-	}
-}
 
 void sEOS_Dispatch_Tasks(void) {
 	if(MEF_flag){
@@ -43,3 +33,12 @@ void sEOS_Dispatch_Tasks(void) {
 	}
 }
 
+
+//MANEJADOR DE INTERRUPCION DEL COMPARADOR A DEL TIMER0
+//se activa periodicamente cuando TCNT0==OCR0A modo CTC
+ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=194/15,625KHz=12ms  o fisr=15,625KHz/194=80Hz
+	if(++cont_MEF == 25 ){ //esto deberia entrar cada 60ms, pero lo hace cada 1 seg
+		MEF_flag= 1;
+		cont_MEF = 0;
+	}
+}
