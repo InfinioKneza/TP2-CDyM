@@ -215,6 +215,7 @@ void cambiar_Hora(MEF_STATE state){
 			LCDcursorOnBlink();
 		break;
 	}
+	LCDcursorOFF();
 }
 
 void LCDHora(void){
