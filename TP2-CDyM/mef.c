@@ -1,8 +1,8 @@
 #include "mef.h"
 static uint8_t cantDigitos;
 static uint8_t horaIngresada;
-static uint8_t cerrado[] = "CERRADO";
-static uint8_t abierto[] = "ABIERTO";
+static uint8_t cerrado[] = "CERRADO ";
+static uint8_t abierto[] = "ABIERTO ";
 static uint8_t denegado[] = "DENEGADO";
 static uint8_t cantTecla = 0;
 static uint8_t hora[8];
@@ -190,19 +190,20 @@ void cambiar_Hora(MEF_STATE state){
 }
 
 void LCDHora(void){
+				LCDcursorOnBlink();
 		if (State_call_count== 1)
 		{
-			LCDclr();
+			LCDhome();
+			LCDstring((uint8_t*)"                ",16);
 			LCDGotoXY(4,0);
 			LCDstring(hora, 8);
-			LCDGotoXY(4,0);
+			LCDGotoXY(3,0);
 		}
 		else{
-			LCDGotoXY(4,0);
+			LCDGotoXY(3,0);
 			LCDstring(hora, 8);
-			LCDGotoXY(4+cantDigitos,0);
+			LCDGotoXY(3,0);
 	}
-	LCDcursorOnBlink();
 }
 
 void LCDMinutos(void){
@@ -257,19 +258,24 @@ uint8_t Verificar_Password(void){
 static void BreakCerrado(void)
 {
 	if(State_call_count==1){
-		LCDclr();
+		LCDstring((uint8_t*)"                ",16);
 		LCDGotoXY(4,0);
 		CLOCK_GetHora(hora);
 		LCDstring(hora, 8);
 		LCDGotoXY(4,1);
-		LCDstring(cerrado, 7);
+		LCDstring(cerrado, 8);
+		LCDhome();
+		LCDGotoXY(3,0);
 	}
 	if(horaActual >= 10){		
 		CLOCK_GetHora(hora);
-		LCDGotoXY(4,0);
+		LCDGotoXY(3,0);
 		LCDstring(hora, 8);
 		horaActual = 0;
+		LCDhome();
+		LCDGotoXY(3,0);
 	}
+
 }
 
 static void ingPass(void){
@@ -277,7 +283,9 @@ static void ingPass(void){
 	System_state = PASSWORD;
 	password[cantTecla] = *key;
 	cantTecla++;
-	LCDclr();
+	LCDstring((uint8_t*)"                ",16);
+	LCDGotoXY(0,1);
+	LCDstring((uint8_t*)"                ",16);
 	LCDGotoXY(6,1);
 	LCDsendChar('*');
 }
@@ -297,13 +305,15 @@ static void stateCerrado(void){
 }
 
 static void stateAbierto(void){
-	LCDclr();
+	LCDhome();
+	LCDstring((uint8_t*)"                ",16);
 	LCDGotoXY(4,1);
-	LCDstring(abierto,7);
+	LCDstring(abierto,8);
 }
 
 static void stateDenegado(void){
-	LCDclr();
+	LCDhome();
+	LCDstring((uint8_t*)"                ",16);
 	LCDGotoXY(4,1);
-	LCDstring(denegado,7);
+	LCDstring(denegado,8);
 }

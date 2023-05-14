@@ -14,15 +14,15 @@
 #include "stdlib.h"
 #include "stdint.h"
 
-uint8_t hora,minuto, segundo;
+uint8_t horaCompi,minutoCompi, segundoCompi;
 
 
 void obtener_hora_actual() {
 	const char* compilationTime = __TIME__;  // Store the compilation time in a variable
 	
-	hora = ((atoi(&compilationTime[0]))*10 + (atoi(&compilationTime[1]))) / 10;
-	minuto = ((atoi(&compilationTime[3]))*10 + (atoi(&compilationTime[4]))) /10;
-	segundo = ((atoi(&compilationTime[6]))*10 + (atoi(&compilationTime[7]))) /10;
+	horaCompi = ((atoi(&compilationTime[0]))*10 + (atoi(&compilationTime[1]))) / 10;
+	minutoCompi = ((atoi(&compilationTime[3]))*10 + (atoi(&compilationTime[4]))) /10;
+	segundoCompi = ((atoi(&compilationTime[6]))*10 + (atoi(&compilationTime[7]))) /10;
 }
 
 int main(void)
@@ -31,7 +31,7 @@ int main(void)
 	LCD_Init();
 	// inicializar clock
 	obtener_hora_actual();
-	CLOCK_Init(hora,minuto,segundo);
+	CLOCK_Init(horaCompi,minutoCompi,segundoCompi);
 	// inicializar teclado
 	TECLADO_Init();
 	// inicializar maq de estados y buffers
