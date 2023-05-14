@@ -1,6 +1,4 @@
 #include "mef.h"
-int State_call_count;
-MEF_STATE System_state;
 static uint8_t cantDigitos;
 static uint8_t horaIngresada;
 
