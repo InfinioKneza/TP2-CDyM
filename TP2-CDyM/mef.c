@@ -35,10 +35,10 @@ char Verificar_Password(void){
 		cantTecla = 0;
 		return 0;
 	}
-	//Verifico que tengo ingresado la contraseña completa
+	//Verifico que tengo ingresado la contraseÃ±a completa
 	if (cantTecla == 4){
 		cantTecla = 0;
-		return validacion_final(); //Retorna 1 si la contraseña es correcta, o 0 si es incorrecta
+		return validacion_final(); //Retorna 1 si la contraseÃ±a es correcta, o 0 si es incorrecta
 	}else{
 		return 0; //No tengo las cuatro claves aun
 	}
@@ -63,7 +63,7 @@ void CERRADURA_Update(void)
 			LCDstring(cerrado,7);
 			//Se fija si se apreta por teclado
 			if (KEYPAD_Scan(key) == 1){
-				//Se fija si ingresa contaseña
+				//Se fija si ingresa contaseÃ±a
 				if( *key == '0' ||	*key == '1' || *key == '2' || *key == '3' || *key == '4' || *key == '5' || *key == '6' || 
 					*key == '7' || *key == '8' || *key == '9'){
 					password[cantTecla] = *key;
@@ -93,14 +93,14 @@ void CERRADURA_Update(void)
 			
 		case PASSWORD:
 			//Mensaje de ingreso al estado
-			LCDstring("Ingrese contraseña:",19);
+			LCDstring("Ingrese contraseÃ±a:",19);
 			//Esperar 30 segundos para que ingrese la clave, sino denegado
 			if(++State_call_count > 300){
 				System_state = DENEGADO;
 				State_call_count = 0;
 				break;
 			}	
-			//Verifico que ingreso bien la contraseña
+			//Verifico que ingreso bien la contraseÃ±a
 			if (Verificar_Password() == 1){
 				System_state = ABIERTO;
 				State_call_count = 0;
