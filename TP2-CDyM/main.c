@@ -35,10 +35,10 @@ int main(void)
 	// inicializar teclado
 	TECLADO_Init();
 	// inicializar maq de estados y buffers
-	CERRADURA_Init(10);
+	CERRADURA_Init();
 	// configurar timer
 	Timer0Init();
-	// activavr interrupciones
+	// activar interrupciones
 	sei();
 	while(1)
 	{
