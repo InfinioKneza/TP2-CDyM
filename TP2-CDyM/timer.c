@@ -8,6 +8,9 @@
 #include "timer.h"
 
 uint8_t count_clock = 0;
+uint8_t MEF_flag = 0;
+uint8_t cont_MEF = 0;
+uint8_t clock_MEF = 0;
 //CONFIGURACION DEL TIMER0
 //Activación de interrupción periódica y
 //Generación de señal periódica en terminal OC0A (PD6) 
@@ -24,22 +27,19 @@ void Timer0Init(void){
 //ejecuta una tarea dummy para test
 ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=194/15,625KHz=12ms  o fisr=15,625KHz/194=80Hz
 	if(++count_clock >4 ){ //esto deberia entrar cada 60ms, pero lo hace cada 1 seg
-		PORTB ^=(1<<5);
-		count_clock = 0;
+		MEF_flag= 0;
+		cont_MEF = 0;
 	}
 }
 
-//PROGRAMA MAIN
-//Inicializaciones y activación de interrupciones
-//pone en ejecución una tarea dummy en el loop.
-int Timer(void)
-{
-	DDRB |=(1<<DDB5);
-	Timer0Init();
-	sei();
-
-    while (1) 
-    {
-    }
+void sEOS_Dispatch_Tasks(void) {
+	if(MEF_flag){
+		if(++clock_MEF==10){
+			CLOCK_Update();
+			clock_MEF=0;
+		}
+		MEF_flag=0;
+		CERRADURA_Update();
+	}
 }
 

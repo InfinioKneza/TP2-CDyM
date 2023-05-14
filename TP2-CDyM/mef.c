@@ -1,6 +1,11 @@
 #include "mef.h"
 static uint8_t cantDigitos;
 static uint8_t horaIngresada;
+static uint8_t cerrado[] = "CERRADO";
+static uint8_t abierto[] = "ABIERTO";
+static uint8_t denegado[] = "DENEGADO";
+static uint8_t cantTecla = 0;
+static uint8_t hora[8];
 
 
 
@@ -13,8 +18,7 @@ void CERRADURA_Update(void)
 	switch(System_state)
 	{
 		case CERRADO:
-			LCDstring(CLOCK_GetHora(hora),8);
-			LCDstring(cerrado,7);
+			LCDCerrado();
 			//Se fija si se apreta por teclado
 			if (KEYPAD_Scan(key) == 1){
 				//Se fija si ingresa contaseña
@@ -170,36 +174,6 @@ void CERRADURA_Update(void)
 	
 }
 
-
-void sEOS_Dispatch_Tasks(void) {
-	// actualizar MEF cada 100 ms
-	if ( MEF_flag) {
-		MEF_flag = 0;
-		CERRADURA_Update(); // MEF
-	}
-}
-
-
-
-
-
-int main(void)
-{
-	// Inicializar LCD
-	LCD_Init();
-	// inicializar teclado
-	TECLADO_Init();
-	// inicializar maq de estados y buffers
-	CERRADURA_Init();
-	// configurar timer (10ms tick)
-	//sEOS_Init_Timer(10);
-	while(1)
-	{
-		sEOS_Dispatch_Tasks(); // ejecutar tareas
-		
-	}
-}
-
 void cambiar_Hora(MEF_STATE state){
 	System_state = state;
 	State_call_count = 0;
@@ -263,8 +237,12 @@ void cerrar(void){
 
 void CERRADURA_Init(){
 	System_state = CERRADO;
-	LCDstring(CLOCK_GetHora(hora), 8);
-	LCDstring(cerrado,7);
+	LCDclr();
+	LCDGotoXY(4,0);
+	CLOCK_GetHora(hora);
+	LCDstring(hora, 8);
+	LCDGotoXY(4,1);
+	LCDstring(cerrado, 7);
 	State_call_count = 0;
 }
 
@@ -299,4 +277,14 @@ char Verificar_Password(void){
 		}else{
 		return 0; //No tengo las cuatro claves aun
 	}
+}
+
+
+void LCDCerrado(void){
+		LCDclr();
+		LCDGotoXY(4,0);
+		CLOCK_GetHora(hora);
+		LCDstring(hora, 8);
+		LCDGotoXY(4,1);
+		LCDstring(cerrado, 7);
 }

@@ -35,18 +35,15 @@ void CLOCK_Update(){
 	}
 }
 
-uint8_t* CLOCK_GetHora(uint8_t* hAct){
-	free(hAct);
-	uint8_t* hora = malloc(sizeof(uint8_t)*8);
-	hora[0] = hours/10;
-	hora[1] = hours%10;
-	hora[2] = ':';
-	hora[3] = minutes/10;
-	hora[4] = minutes%10;
-	hora[5] = ':';
-	hora[6] = seconds/10;
-	hora[7] = seconds%10;
-	return hora;	
+void CLOCK_GetHora(uint8_t* hAct){
+	hAct[0] = (hours/10) + '0';
+	hAct[1] = (hours%10) + '0';
+	hAct[2] = ':';
+	hAct[3] = (minutes/10) + '0';
+	hAct[4] = (minutes%10) + '0';
+	hAct[5] = ':';
+	hAct[6] = (seconds/10) + '0';
+	hAct[7] = (seconds%10) + '0';	
 }
 
 void CLOCK_ModHora(uint8_t h){

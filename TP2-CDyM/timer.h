@@ -1,26 +1,11 @@
 #ifndef _TIMER_H
 #define _TIMER_H
 
-	// Archivo de cabecera del Microcontrolador
-	#include <avr/io.h>
+	#include "mef.h"
+	#include "clock.h"
 
-	// Interrupciones
-	#include <avr/interrupt.h>
-	
-	// Tipos de datos definidos por el usuario
-	//typedef unsigned char uint8_t; // Esta incluido en stdint.h
-	
-	// Oscillator / resonator frequency (in Hz)
-	#define F_CPU 16000000UL		// 16 MHz
-	
-	// Delays perdiendo tiempo del uC
-	#include <util/delay.h>
-
-	// Tipos de datos enteros estandar
-	#include <stdint.h>	
-
-	// Manejo de caracteres y mas
-	#include <stdlib.h>	
+	void sEOS_Dispatch_Tasks(void);
+	void Timer0Init(void);
 
 #endif
 
