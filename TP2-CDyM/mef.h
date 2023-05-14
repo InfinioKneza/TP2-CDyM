@@ -18,7 +18,7 @@ typedef enum {CERRADO, PASSWORD, ABIERTO, DENEGADO, HORA, MINUTO, SEGUNDOS} MEF_
 uint8_t* key;
 uint8_t State_call_count;
 MEF_STATE System_state;
-uint8_t* password;
+uint8_t password[4];
 
 void CERRADURA_Init();
 void CERRADURA_Update(void);

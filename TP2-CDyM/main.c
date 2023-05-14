@@ -9,7 +9,6 @@
 #include "clock.h"
 #include "lcd.h"
 #include "timer.h"
-#include "teclado.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "stdint.h"
@@ -32,8 +31,6 @@ int main(void)
 	// inicializar clock
 	obtener_hora_actual();
 	CLOCK_Init(horaCompi,minutoCompi,segundoCompi);
-	// inicializar teclado
-	TECLADO_Init();
 	// inicializar maq de estados y buffers
 	CERRADURA_Init();
 	// configurar timer
