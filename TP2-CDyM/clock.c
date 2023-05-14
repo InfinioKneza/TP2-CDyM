@@ -52,6 +52,7 @@ uint8_t* CLOCK_GetHora(uint8_t* hAct){
 void CLOCK_ModHora(uint8_t h){
 	if(h<24 && h>=0){
 		hours=h;
+	}
 }
 
 void CLOCK_ModMin(uint8_t h){

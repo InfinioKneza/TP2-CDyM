@@ -12,6 +12,7 @@
 #include "clock.h"
 #include "lcd.h"
 #include "timer.h"
+#include "teclado.h"
 
 typedef enum {CERRADO, PASSWORD, ABIERTO, DENEGADO, HORA, MINUTO, SEGUNDOS} MEF_STATE;
 uint8_t cerrado[7] = {'C', 'E', 'R', 'R', 'A', 'D', 'O'};
@@ -20,7 +21,11 @@ uint8_t denegado[8] = {'D', 'E', 'N', 'E', 'G', 'A', 'D', 'O'};
 uint8_t MEF_flag;
 uint8_t cont_MEF;
 uint8_t* key;
+uint8_t cantTecla = 0;
+uint8_t State_call_count;
+MEF_STATE System_state;
 uint8_t* hora;
+uint8_t* password;
 
 
 #endif /* MEF_H_ */
