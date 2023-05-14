@@ -3,6 +3,7 @@
 
 	#include "mef.h"
 	#include "clock.h"
+	#include "avr/interrupt.h"
 
 	void sEOS_Dispatch_Tasks(void);
 	void Timer0Init(void);
