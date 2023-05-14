@@ -120,7 +120,7 @@
     <Compile Include="lcd.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="main.c">
+    <Compile Include="timer.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mef.c">

@@ -1,4 +1,4 @@
-
+#include "mef.h"
 
 
 void CERRADURA_Init(){
@@ -135,8 +135,8 @@ void CERRADURA_Update(void)
 			LCDstring("Ingrese hora:",13);
 			//Cursor parpadeante
 			LCDcursorOnBlink();
-			CLOCK_ModHora(CambiarHorario(hora));
-			System_state(CERRADO);
+	
+			System_state = CERRADO;
 			State_call_count = 0;
 		break;
 			
@@ -145,18 +145,18 @@ void CERRADURA_Update(void)
 			LCDstring("Ingrese minutos:",16);
 			//Cursor parpadeante
 			LCDcursorOnBlink();
-			CLOCK_ModMin(CambiarHorario(hora));
-			System_state(CERRADO);
+			
+			System_state = CERRADO;
 			State_call_count = 0;
 		break;
 		
-		case MINUTO:
+		case SEGUNDOS:
 			//Mensaje que define el estado
 			LCDstring("Ingrese segundos:",17);
 			//Cursor parpadeante
 			LCDcursorOnBlink();
-			CLOCK_ModSeg(CambiarHorario(hora));
-			System_state(CERRADO);
+	
+			System_state = CERRADO;
 			State_call_count = 0;
 		break;
 		
@@ -165,15 +165,6 @@ void CERRADURA_Update(void)
 	}
 	
 }
-
-
-
-
-
-
-
-
-
 
 
 //Esto luego se cambia
@@ -212,7 +203,7 @@ void main(void)
 	while(1)
 	{
 		sEOS_Dispatch_Tasks(); // ejecutar tareas
-		sEOS_Go_To_Sleep(); // modo idle bajo consumo
+		
 	}
 }
 
