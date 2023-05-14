@@ -12,6 +12,7 @@
 #include "clock.h"
 #include "lcd.h"
 #include "timer.h"
+#include "teclado.h"
 
 typedef enum {CERRADO, PASSWORD, ABIERTO, DENEGADO, HORA, MINUTO, SEGUNDOS} MEF_STATE;
 uint8_t cerrado[7] = {'C', 'E', 'R', 'R', 'A', 'D', 'O'};

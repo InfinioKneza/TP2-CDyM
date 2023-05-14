@@ -60,26 +60,26 @@ void CERRADURA_Update(void)
 			//Se fija si se apreta por teclado
 			if (KEYPAD_Scan(key) == 1){
 				//Se fija si ingresa contaseña
-				if( &key == '0' ||	&key == '1' || &key == '2' || &key == '3' || &key == '4' || &key == '5' || &key == '6' || 
-					&key == '7' || &key == '8' || &key == '9'){
-					password[cantTecla] = &key;
+				if( *key == '0' ||	*key == '1' || *key == '2' || *key == '3' || *key == '4' || *key == '5' || *key == '6' || 
+					*key == '7' || *key == '8' || *key == '9'){
+					password[cantTecla] = *key;
 					System_state = PASSWORD;
 					State_call_count = 0;
 					break;
 				}
 				//Se fija si se ingresa algun cambio de horario
-				if (&key == 'A'){
+				if (*key == 'A'){
 					System_state = HORA;
 					State_call_count = 0;
 					break;
 				}
-				if (&key == 'B'){
+				if (*key == 'B'){
 					System_state = MINUTO;
 					State_call_count = 0;
 					break;
 				}
 			
-				if (&key == 'C'){
+				if (*key == 'C'){
 					System_state = SEGUNDOS;
 					State_call_count = 0;
 					break;
@@ -190,7 +190,7 @@ void sEOS_Dispatch_Tasks(void) {
 
 
 
-void main(void)
+int main(void)
 {
 	// Inicializar LCD
 	LCD_Init();
@@ -199,11 +199,12 @@ void main(void)
 	// inicializar maq de estados y buffers
 	CERRADURA_Init();
 	// configurar timer (10ms tick)
-	sEOS_Init_Timer(10);
+	//sEOS_Init_Timer(10);
 	while(1)
 	{
 		sEOS_Dispatch_Tasks(); // ejecutar tareas
 		
 	}
+	return 0;
 }
 
