@@ -117,23 +117,57 @@ void CERRADURA_Update(void)
 		break;
 			
 		case MINUTO:
-			//Mensaje que define el estado
-			LCDstring("Ingrese minutos:",16);
-			//Cursor parpadeante
-			LCDcursorOnBlink();
-			CLOCK_ModMin(CambiarHorario(hora));
-			System_state(CERRADO);
-			State_call_count = 0;
+			if(KEYPAD_Scan(key)){
+				if (&key != 'A' && &key != 'B' && &key != 'C' && &key != 'D' && &key != '*' && &key != '#')
+				{
+					if (!cantDigitos)
+					{
+						cantDigitos++;
+						hora[3]=key;
+						horaIngresada= (&key - '0') *10;
+					}else if(cantDigitos==1)
+					{
+						cantDigitos++;
+						hora[4]=&key;
+						horaIngresada+= (key-'0');
+					}
+					LCDMinutos();
+				}else if(&key == 'B')
+				{
+					CLOCK_ModMin(horaIngresada);
+					cerrar();
+				}else if(&key == '#')
+				{
+					cerrar();
+				}
+			}
 		break;
 		
-		case MINUTO:
-			//Mensaje que define el estado
-			LCDstring("Ingrese segundos:",17);
-			//Cursor parpadeante
-			LCDcursorOnBlink();
-			CLOCK_ModSeg(CambiarHorario(hora));
-			System_state(CERRADO);
-			State_call_count = 0;
+		case SEGUNDOS:
+		if(KEYPAD_Scan(key)){
+			if (&key != 'A' && &key != 'B' && &key != 'C' && &key != 'D' && &key != '*' && &key != '#')
+			{
+				if (!cantDigitos)
+				{
+					cantDigitos++;
+					hora[6]=key;
+					horaIngresada= (&key - '0') *10;
+				}else if(cantDigitos==1)
+				{
+					cantDigitos++;
+					hora[7]=&key;
+					horaIngresada+= (key-'0');
+				}
+				LCDSegundos();
+			}else if(&key == 'C')
+			{
+				CLOCK_ModSeg(horaIngresada);
+				cerrar();
+			}else if(&key == '#')
+			{
+				cerrar();
+			}
+		}
 		break;
 		
 		
@@ -214,7 +248,36 @@ static void LCDHora(void){
 	}
 	LCDcursorOnBlink();
 }
-
+static void LCDMinutos(void){
+	if (State_call_count== 1)
+	{
+		LCDclr();
+		LCDGotoXY(4,0);
+		LCDstring(hora, 8);
+		LCDGotoXY(7,0);
+	}
+	else{
+		LCDGotoXY(4,0);
+		LCDstring(hora, 8);
+		LCDGotoXY(7+cantDigitos,0);
+	}
+	LCDcursorOnBlink();
+}
+static void LCDSegundos(void){
+	if (State_call_count== 1)
+	{
+		LCDclr();
+		LCDGotoXY(4,0);
+		LCDstring(hora, 8);
+		LCDGotoXY(10,0);
+	}
+	else{
+		LCDGotoXY(4,0);
+		LCDstring(hora, 8);
+		LCDGotoXY(10+cantDigitos,0);
+	}
+	LCDcursorOnBlink();
+}
 static void cerrar(void){
 	System_state = CERRADO;
 	State_call_count = 0;
