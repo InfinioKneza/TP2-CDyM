@@ -7,7 +7,7 @@ static uint8_t denegado[] = "DENEGADO";
 static uint8_t cantTecla = 0;
 static uint8_t hora[8];
 static uint8_t horaActual= 0;
-
+static uint8_t counterAux=0;
 static void BreakCerrado(void);
 static void ingPass(void);
 static void ingPassContinue(void);
@@ -70,8 +70,12 @@ void CERRADURA_Update(void)
 				}			
 			}
 			//Esperar 30 segundos para que ingrese la clave, sino denegado
-			if(++State_call_count > 300){
-				System_state = DENEGADO;
+			if(++State_call_count > 45){
+				if(++counterAux > 100){
+					System_state = DENEGADO;
+					counterAux = 0;
+					
+				}
 				State_call_count = 0;
 				break;
 			}	
@@ -81,9 +85,13 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateAbierto();
 			}
-			if (++State_call_count > 30)
+			if (++State_call_count > 10)
 			{
-				stateCerrado();
+				if(++counterAux > 100){
+					stateCerrado();
+					counterAux = 0;
+				}
+				State_call_count = 0;
 			}
 		break;	
 			
@@ -91,9 +99,13 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateDenegado();
 			}
-			if (++State_call_count > 20)
+			if (++State_call_count > 5)
 			{
-				stateCerrado();
+				if(++counterAux > 100){
+					stateCerrado();
+					counterAux = 0;
+				}				
+				State_call_count = 0;
 			}
 		break;
 		
@@ -192,7 +204,7 @@ void cambiar_Hora(MEF_STATE state){
 	System_state = state;
 	State_call_count = 0;
 	cantDigitos = 0;
-	horaIngresada= 0;
+	horaIngresada= 100;
 	LCDhome();
 	LCDstring((uint8_t*)"                ",16);
 	LCDGotoXY(4,0);
