@@ -38,9 +38,7 @@ int main(void)
 	// activar interrupciones
 	sei();
 	while(1)
-	{
-		sEOS_Dispatch_Tasks(); // ejecutar tareas
-		
+	{		
 	}
 	return 0;
 }
