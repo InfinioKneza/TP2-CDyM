@@ -70,8 +70,8 @@ void CERRADURA_Update(void)
 				}			
 			}
 			//Esperar 30 segundos para que ingrese la clave, sino denegado
-			if(++State_call_count > 45){
-				if(++counterAux > 100){
+			if(++State_call_count > 30){
+				if(++counterAux > 10){
 					System_state = DENEGADO;
 					counterAux = 0;
 					
@@ -85,13 +85,10 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateAbierto();
 			}
-			if (++State_call_count > 10)
+			if (++State_call_count > 30)
 			{
-				if(++counterAux > 100){
-					stateCerrado();
-					counterAux = 0;
-				}
 				State_call_count = 0;
+				stateCerrado();
 			}
 		break;	
 			
@@ -99,13 +96,10 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateDenegado();
 			}
-			if (++State_call_count > 5)
+			if (++State_call_count > 20)
 			{
-				if(++counterAux > 100){
-					stateCerrado();
-					counterAux = 0;
-				}				
 				State_call_count = 0;
+				stateCerrado();	
 			}
 		break;
 		
