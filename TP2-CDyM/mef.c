@@ -14,11 +14,11 @@ static void ingPassContinue(void);
 static void stateCerrado(void);
 static void stateAbierto(void);
 static void stateDenegado(void);
-void cambiar_Hora(MEF_STATE);
-void LCDHora(void);
-void LCDMinutos(void);
-void LCDSegundos(void);
-uint8_t Verificar_Password(void);
+static void cambiar_Hora(MEF_STATE);
+static void LCDHora(void);
+static void LCDMinutos(void);
+static void LCDSegundos(void);
+static uint8_t Verificar_Password(void);
 
 void CERRADURA_Update(void)
 //llamada cada 100 ms
