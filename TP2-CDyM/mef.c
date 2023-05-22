@@ -61,19 +61,18 @@ void CERRADURA_Update(void)
 				//Verifico que ingreso bien la contraseña
 				if (Verificar_Password()){
 					System_state = ABIERTO;
-					State_call_count = 0;
-					break;
 				} else {
 					System_state = DENEGADO;
-					State_call_count = 0;
-					break;
-				}			
+				}
+				State_call_count = 0;
+				counterAux = 0;
+				break;		
 			}
-			//Esperar 30 segundos para que ingrese la clave, sino denegado
-			if(++State_call_count > 100){
+			//Esperar 15 segundos para que ingrese la clave, sino denegado
+			if(++State_call_count > 99){ 
 				if(++counterAux > 30){
-					System_state = DENEGADO;
-					counterAux = 0;
+					System_state = DENEGADO;//si bien la mef es llamada cada 10ms ...
+					counterAux = 0; //... las cuentas seran dentro de 19 seg porque tarda algunos ciclos de reloj en otras instrucciones
 					
 				}
 				State_call_count = 0;
@@ -85,9 +84,9 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateAbierto();
 			}
-			if (++State_call_count > 10)
+			if (++State_call_count > 16)
 			{
-				if (++counterAux > 30)
+				if (++counterAux > 29)
 				{
 					counterAux = 0;
 					stateCerrado();
@@ -100,10 +99,14 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateDenegado();
 			}
-			if (++State_call_count > 200)
+			if (++State_call_count > 16)
 			{
+				if (++counterAux > 19)
+				{
+					counterAux = 0;
+					stateCerrado();
+				}
 				State_call_count = 0;
-				stateCerrado();	
 			}
 		break;
 		
