@@ -70,8 +70,8 @@ void CERRADURA_Update(void)
 				}			
 			}
 			//Esperar 30 segundos para que ingrese la clave, sino denegado
-			if(++State_call_count > 30){
-				if(++counterAux > 10){
+			if(++State_call_count > 100){
+				if(++counterAux > 30){
 					System_state = DENEGADO;
 					counterAux = 0;
 					
@@ -85,10 +85,14 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateAbierto();
 			}
-			if (++State_call_count > 30)
+			if (++State_call_count > 10)
 			{
+				if (++counterAux > 30)
+				{
+					counterAux = 0;
+					stateCerrado();
+				}
 				State_call_count = 0;
-				stateCerrado();
 			}
 		break;	
 			
@@ -96,7 +100,7 @@ void CERRADURA_Update(void)
 			if(State_call_count==1){
 				stateDenegado();
 			}
-			if (++State_call_count > 20)
+			if (++State_call_count > 200)
 			{
 				State_call_count = 0;
 				stateCerrado();	
@@ -313,6 +317,7 @@ static void stateAbierto(void){
 	LCDhome();
 	LCDstring((uint8_t*)"                ",16);
 	LCDGotoXY(4,1);
+	LCDcursorOFF();
 	LCDstring(abierto,8);
 }
 
@@ -320,5 +325,6 @@ static void stateDenegado(void){
 	LCDhome();
 	LCDstring((uint8_t*)"                ",16);
 	LCDGotoXY(4,1);
+	LCDcursorOFF();
 	LCDstring(denegado,8);
 }

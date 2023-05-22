@@ -26,7 +26,7 @@ void Timer0Init(void){
 ISR(TIMER0_COMPA_vect){ //interrupción periódica de periodo Tisr=250/250KHz=1ms  o fisr=250KHz/250=1KHz
 	PORTC ^= (1<<PORTC5);
 	if(++cont_MEF == 10 ){ 
-		if(++clock_MEF==10){
+		if(++clock_MEF==100){
 			CLOCK_Update();
 			clock_MEF=0;
 			PORTC ^= (1<<PORTC4);
