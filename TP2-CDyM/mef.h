@@ -22,11 +22,6 @@ uint8_t password[4];
 
 void CERRADURA_Init();
 void CERRADURA_Update(void);
-void cambiar_Hora(MEF_STATE);
-void LCDHora(void);
-void LCDMinutos(void);
-void LCDSegundos(void);
-void LCDCerrado(void);
-uint8_t Verificar_Password(void);
+
 
 #endif /* MEF_H_ */
