@@ -2,7 +2,7 @@
  * Teclado.c
  *
  * Created: 17/04/2023 14:14:59
- * Author : Knesa y Petrigh
+ * Author : Petrigh y Canessa
  */ 
 
 #include "teclado.h"

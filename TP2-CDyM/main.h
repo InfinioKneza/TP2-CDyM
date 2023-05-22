@@ -2,7 +2,7 @@
  * main.h
  *
  * Created: 14/05/2023 13:00:05
- *  Author: Petrigh
+ *  Author: Petrigh y Canessa
  */ 
 
 
